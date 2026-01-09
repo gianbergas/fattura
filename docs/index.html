@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gianna & Donno: Slot dei Fratelli</title>
+    <style>
+      :root {
+        --night: #0b0f1c;
+        --midnight: #121a2b;
+        --glow: #ffb347;
+        --teal: #37d8b6;
+        --berry: #ff6b8b;
+        --ink: #f7f2ea;
+        --panel: rgba(255, 255, 255, 0.1);
+        --panel-strong: rgba(255, 255, 255, 0.2);
+        --outline: rgba(255, 255, 255, 0.12);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: "Trebuchet MS", "Gill Sans", "Verdana", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(900px 580px at 15% 12%, rgba(255, 179, 71, 0.24), transparent 60%),
+          radial-gradient(620px 520px at 88% 18%, rgba(55, 216, 182, 0.22), transparent 58%),
+          linear-gradient(160deg, var(--night), var(--midnight));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 24px;
+      }
+
+      .shell {
+        width: min(1120px, 100%);
+        background: rgba(10, 14, 24, 0.82);
+        border-radius: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 30px 90px rgba(5, 9, 16, 0.65);
+        overflow: hidden;
+      }
+
+      header {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr;
+        gap: 24px;
+        padding: 24px 30px 18px;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0.08), transparent);
+        animation: slide-in 0.6s ease-out;
+      }
+
+      .tagline {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        letter-spacing: 0.26em;
+        text-transform: uppercase;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        width: fit-content;
+      }
+
+      header h1 {
+        margin: 10px 0 8px;
+        font-size: clamp(1.9rem, 2.3vw + 1rem, 2.8rem);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      header p {
+        margin: 0;
+        opacity: 0.76;
+        line-height: 1.55;
+      }
+
+      .story {
+        display: grid;
+        gap: 10px;
+      }
+
+      .stats {
+        display: grid;
+        gap: 12px;
+        font-size: 0.95rem;
+      }
+
+      .chip {
+        padding: 8px 12px;
+        border-radius: 999px;
+        background: var(--panel);
+        border: 1px solid var(--outline);
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+      }
+
+      main {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 22px;
+        padding: 12px 30px 30px;
+      }
+
+      .machine {
+        position: relative;
+        background: var(--panel);
+        border-radius: 22px;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        overflow: hidden;
+      }
+
+      .machine::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 60%);
+        pointer-events: none;
+      }
+
+      .reels {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        margin: 16px 0 10px;
+      }
+
+      .reel {
+        height: 160px;
+        background: rgba(8, 11, 20, 0.9);
+        border-radius: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: grid;
+        place-items: center;
+        font-size: 3.2rem;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.4);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .reel.spin {
+        animation: wobble 0.4s ease-in-out;
+        box-shadow: 0 0 16px rgba(255, 179, 71, 0.35);
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .btn {
+        flex: 1 1 150px;
+        border: none;
+        color: var(--ink);
+        background: rgba(255, 255, 255, 0.14);
+        padding: 12px 16px;
+        border-radius: 14px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        transition: transform 0.15s ease, background 0.2s ease;
+        touch-action: manipulation;
+      }
+
+      .btn:active {
+        transform: scale(0.97);
+        background: rgba(255, 255, 255, 0.22);
+      }
+
+      .btn.primary {
+        background: linear-gradient(140deg, rgba(255, 179, 71, 0.8), rgba(255, 107, 139, 0.7));
+        color: #23170a;
+        font-weight: 600;
+      }
+
+      .dialogue {
+        margin-top: 12px;
+        background: rgba(10, 13, 22, 0.7);
+        border-radius: 14px;
+        padding: 10px 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: grid;
+        gap: 6px;
+      }
+
+      .dialogue strong {
+        font-size: 0.75rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--glow);
+      }
+
+      .sidebar {
+        background: var(--panel);
+        border-radius: 20px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        display: grid;
+        gap: 14px;
+        animation: fade-in 0.7s ease-out;
+      }
+
+      .card {
+        background: rgba(255, 255, 255, 0.08);
+        border-radius: 16px;
+        padding: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+      }
+
+      .card h3 {
+        margin: 0 0 6px;
+        font-size: 0.98rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .card p {
+        margin: 0;
+        font-size: 0.9rem;
+        opacity: 0.76;
+        line-height: 1.5;
+      }
+
+      .overlay {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        background: rgba(6, 8, 14, 0.84);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s ease;
+      }
+
+      .overlay.show {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .overlay-card {
+        background: rgba(16, 20, 30, 0.95);
+        border-radius: 20px;
+        padding: 24px;
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        text-align: center;
+        width: min(420px, 90%);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      }
+
+      .overlay-card h2 {
+        margin: 0 0 10px;
+        font-size: 1.8rem;
+      }
+
+      .overlay-card p {
+        margin: 0 0 16px;
+        opacity: 0.8;
+      }
+
+      @keyframes wobble {
+        0% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+        100% {
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slide-in {
+        from {
+          transform: translateY(16px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes fade-in {
+        from {
+          transform: translateX(16px);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @media (max-width: 980px) {
+        header {
+          grid-template-columns: 1fr;
+        }
+
+        main {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        body {
+          padding: 12px;
+        }
+
+        header,
+        main {
+          padding-left: 18px;
+          padding-right: 18px;
+        }
+
+        .reel {
+          height: 130px;
+          font-size: 2.4rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <header>
+        <div class="story">
+          <span class="tagline">baia delle lanterne</span>
+          <h1>Gianna & Donno: Slot dei Fratelli</h1>
+          <p>
+            Gianna vuole precisione, Donno vuole potenza. Nella baia delle lanterne hanno
+            trovato una slot artigianale: se vincono, la barca torna a casa.
+          </p>
+        </div>
+        <div class="stats">
+          <div class="chip">Gettoni: <strong id="tokens">5</strong></div>
+          <div class="chip">Giri: <strong id="spins">0</strong> / 10</div>
+          <div class="chip">Ultima vincita: <strong id="lastWin">0</strong></div>
+        </div>
+      </header>
+
+      <main>
+        <section class="machine">
+          <div class="reels">
+            <div class="reel" id="reel1">★</div>
+            <div class="reel" id="reel2">◆</div>
+            <div class="reel" id="reel3">♣</div>
+          </div>
+          <div class="controls">
+            <button class="btn primary" id="spinBtn">Gira</button>
+            <button class="btn" id="boostBtn">Rischia</button>
+            <button class="btn" id="resetBtn">Ricomincia</button>
+          </div>
+          <div class="dialogue" id="dialogueBox">
+            <strong id="speaker">Gianna</strong>
+            <span id="line">Donno, fai piano. Questa slot ci salva la pelle.</span>
+          </div>
+          <div class="overlay" id="endOverlay">
+            <div class="overlay-card">
+              <h2>Fine partita</h2>
+              <p id="endMessage">Ti voglio bene, coglione.</p>
+              <button class="btn primary" id="restartBtn">Ricomincia</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="sidebar">
+          <div class="card">
+            <h3>Regole</h3>
+            <p>
+              Ogni giro costa un gettone. Due simboli uguali = +1, tre uguali = +3.
+              Dieci giri e la sfida finisce.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Rischia</h3>
+            <p>
+              Usa “Rischia” per provare un premio extra: 50% di chance di +2 o di
+              perdere 1 gettone.
+            </p>
+          </div>
+          <div class="card">
+            <h3>Fratelli</h3>
+            <p>
+              Gianna tiene il conto, Donno spinge la fortuna. Le loro battute cambiano
+              ad ogni giro.
+            </p>
+          </div>
+        </aside>
+      </main>
+    </div>
+
+    <script>
+      const symbols = ["★", "◆", "♣", "♥", "⚡", "✶"];
+      const reels = [
+        document.getElementById("reel1"),
+        document.getElementById("reel2"),
+        document.getElementById("reel3"),
+      ];
+      const tokensEl = document.getElementById("tokens");
+      const spinsEl = document.getElementById("spins");
+      const lastWinEl = document.getElementById("lastWin");
+      const spinBtn = document.getElementById("spinBtn");
+      const boostBtn = document.getElementById("boostBtn");
+      const resetBtn = document.getElementById("resetBtn");
+      const speakerEl = document.getElementById("speaker");
+      const lineEl = document.getElementById("line");
+      const endOverlay = document.getElementById("endOverlay");
+      const restartBtn = document.getElementById("restartBtn");
+
+      let tokens = 5;
+      let spins = 0;
+      let lastWin = 0;
+      let isSpinning = false;
+
+      const dialogues = [
+        { speaker: "Gianna", text: "Donno, fai piano. Questa slot ci salva la pelle." },
+        { speaker: "Donno", text: "Gianna, se sei nervosa ti offro un giro in piu." },
+        { speaker: "Gianna", text: "Non spingere a caso, scemo. Guarda i simboli." },
+        { speaker: "Donno", text: "Io spingo e tu conti. Squadra perfetta, no?" },
+        { speaker: "Gianna", text: "Se perdiamo ci tocca remare. Svegliati." },
+        { speaker: "Donno", text: "Se vinciamo ti compro i biscotti. Vedi di tifare." },
+        { speaker: "Gianna", text: "Non fare il gradasso, sei un dilettante." },
+        { speaker: "Donno", text: "Dilettante? Guarda come si fa, sorellina." },
+        { speaker: "Gianna", text: "Concentrati, testone. Una vincita e si torna a casa." },
+        { speaker: "Donno", text: "Se vinciamo ti dico che hai ragione. Forse." },
+      ];
+
+      function pickDialogue() {
+        const line = dialogues[Math.floor(Math.random() * dialogues.length)];
+        speakerEl.textContent = line.speaker;
+        lineEl.textContent = line.text;
+      }
+
+      function setReels(values) {
+        values.forEach((symbol, index) => {
+          reels[index].textContent = symbol;
+        });
+      }
+
+      function animateReels() {
+        reels.forEach((reel) => reel.classList.add("spin"));
+        setTimeout(() => {
+          reels.forEach((reel) => reel.classList.remove("spin"));
+        }, 350);
+      }
+
+      function calculateWin(values) {
+        if (values[0] === values[1] && values[1] === values[2]) return 3;
+        if (values[0] === values[1] || values[1] === values[2] || values[0] === values[2]) return 1;
+        return 0;
+      }
+
+      function updateHud() {
+        tokensEl.textContent = tokens;
+        spinsEl.textContent = spins;
+        lastWinEl.textContent = lastWin;
+      }
+
+      function endGame() {
+        endOverlay.classList.add("show");
+      }
+
+      function spin() {
+        if (isSpinning || tokens <= 0 || spins >= 10) return;
+        isSpinning = true;
+        tokens -= 1;
+        spins += 1;
+
+        const values = [
+          symbols[Math.floor(Math.random() * symbols.length)],
+          symbols[Math.floor(Math.random() * symbols.length)],
+          symbols[Math.floor(Math.random() * symbols.length)],
+        ];
+
+        animateReels();
+        setTimeout(() => {
+          setReels(values);
+          lastWin = calculateWin(values);
+          tokens += lastWin;
+          updateHud();
+          pickDialogue();
+          isSpinning = false;
+          if (tokens <= 0 || spins >= 10) endGame();
+        }, 320);
+      }
+
+      function boost() {
+        if (isSpinning || tokens <= 0) return;
+        isSpinning = true;
+        const win = Math.random() < 0.5 ? 2 : -1;
+        tokens = Math.max(0, tokens + win);
+        lastWin = win;
+        updateHud();
+        pickDialogue();
+        isSpinning = false;
+        if (tokens <= 0) endGame();
+      }
+
+      function resetGame() {
+        tokens = 5;
+        spins = 0;
+        lastWin = 0;
+        setReels(["★", "◆", "♣"]);
+        updateHud();
+        pickDialogue();
+        endOverlay.classList.remove("show");
+      }
+
+      spinBtn.addEventListener("click", spin);
+      boostBtn.addEventListener("click", boost);
+      resetBtn.addEventListener("click", resetGame);
+      restartBtn.addEventListener("click", resetGame);
+
+      updateHud();
+      pickDialogue();
+    </script>
+  </body>
+</html>
